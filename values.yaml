@@ -32,6 +32,17 @@ ingress:
 #       key: value
 extraObjects: []
 
+configMap:
+  enabled: false
+  existingConfigMap: ""
+  data: {}
+
+secret:
+  enabled: false
+  existingSecret: ""
+  type: Opaque
+  stringData: {}
+
 # The container port that the Pod receives traffic on (configurable)
 containerPort: 8080
 

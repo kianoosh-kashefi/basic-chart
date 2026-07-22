@@ -24,6 +24,17 @@ spec:
             - containerPort: {{ .Values.containerPort }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+{{- if or .Values.configMap.enabled .Values.secret.enabled }}
+          envFrom:
+            {{- if .Values.configMap.enabled }}
+            - configMapRef:
+                name: {{ if .Values.configMap.existingConfigMap }}{{ .Values.configMap.existingConfigMap }}{{ else }}{{ include "basic-chart.fullname" . }}-config{{ end }}
+            {{- end }}
+            {{- if .Values.secret.enabled }}
+            - secretRef:
+                name: {{ if .Values.secret.existingSecret }}{{ .Values.secret.existingSecret }}{{ else }}{{ include "basic-chart.fullname" . }}-secret{{ end }}
+            {{- end }}
+{{- end }}
 {{- if .Values.persistence.enabled }}
           volumeMounts:
             - name: data

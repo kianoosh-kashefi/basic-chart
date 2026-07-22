@@ -1,0 +1,10 @@
+{{- if and .Values.configMap.enabled (not .Values.configMap.existingConfigMap) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "basic-chart.fullname" . }}-config
+  labels:
+    {{- include "basic-chart.labels" . | nindent 4 }}
+data:
+{{ toYaml .Values.configMap.data | indent 2 }}
+{{- end }}
