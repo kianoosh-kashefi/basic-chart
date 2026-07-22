@@ -1,30 +1,53 @@
 # basic-chart Helm chart
 
-This repository contains a Helm chart to deploy an application with configurable persistent storage and a Horizontal Pod Autoscaler (HPA).
+This repository contains a Helm chart to deploy an application with configurable persistent storage, optional Ingress support, extra Kubernetes objects, and a Horizontal Pod Autoscaler (HPA).
 
 **Key features**
 - Configurable container port (`containerPort`) that the pod receives traffic on
 - Configurable persistence (enable/disable, existing claim, size, mount path)
+- Optional Ingress configuration via `ingress.*`
+- Extra manifest support via `extraObjects`
 - HPA configuration (min/max replicas and CPU target)
 
 **Files**
-- Chart: `chart/Chart.yaml`
-- Default values: `chart/values.yaml`
-- Templates: `chart/templates/*`
+- Chart: `Chart.yaml`
+- Default values: `values.yaml`
+- Templates: `templates/*`
 
 Quick install
 
 Install with the default values:
 
 ```bash
-helm install my-release ./chart
+helm install my-release .
 ```
 
 Enable persistence and change the container port:
 
 ```bash
-helm install my-release ./chart --set persistence.enabled=true \
+helm install my-release . --set persistence.enabled=true \
   --set containerPort=9090 --set persistence.size=5Gi
+```
+
+Enable Ingress and add an extra object:
+
+```bash
+helm install my-release . --set ingress.enabled=true \
+  --set ingress.hosts[0].host=example.com \
+  --set ingress.hosts[0].paths[0].path=/ \
+  --set ingress.hosts[0].paths[0].pathType=ImplementationSpecific
+```
+
+Add an extra Kubernetes object through values:
+
+```yaml
+extraObjects:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: my-config
+    data:
+      key: value
 ```
 
 Or use a values file `my-values.yaml`:
@@ -45,7 +68,7 @@ hpa:
 ```
 
 ```bash
-helm install my-release ./chart -f my-values.yaml
+helm install my-release . -f my-values.yaml
 ```
 
 Notes
