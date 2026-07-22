@@ -5,6 +5,7 @@ This repository contains a Helm chart to deploy an application with configurable
 **Key features**
 - Configurable container port (`containerPort`) that the pod receives traffic on
 - Configurable persistence (enable/disable, existing claim, size, mount path)
+- Optional second persistent volume via `persistence.extra.*`
 - Optional Ingress configuration via `ingress.*`
 - ConfigMap and Secret environment variable injection via `configMap.*` and `secret.*`
 - Extra manifest support via `extraObjects`
@@ -28,6 +29,16 @@ Enable persistence and change the container port:
 ```bash
 helm install my-release . --set persistence.enabled=true \
   --set containerPort=9090 --set persistence.size=5Gi
+```
+
+Enable an additional persistent volume:
+
+```bash
+helm install my-release . --set persistence.enabled=true \
+  --set persistence.size=5Gi \
+  --set persistence.extra.enabled=true \
+  --set persistence.extra.size=10Gi \
+  --set persistence.extra.mountPath=/data2
 ```
 
 Enable Ingress and add an extra object:

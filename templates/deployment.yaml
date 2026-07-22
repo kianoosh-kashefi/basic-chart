@@ -35,16 +35,29 @@ spec:
                 name: {{ if .Values.secret.existingSecret }}{{ .Values.secret.existingSecret }}{{ else }}{{ include "basic-chart.fullname" . }}-secret{{ end }}
             {{- end }}
 {{- end }}
-{{- if .Values.persistence.enabled }}
+{{- if or .Values.persistence.enabled .Values.persistence.extra.enabled }}
           volumeMounts:
+            {{- if .Values.persistence.enabled }}
             - name: data
               mountPath: {{ .Values.persistence.mountPath }}
+            {{- end }}
+            {{- if .Values.persistence.extra.enabled }}
+            - name: extra-data
+              mountPath: {{ .Values.persistence.extra.mountPath }}
+            {{- end }}
 {{- end }}
-      {{- if .Values.persistence.enabled }}
+      {{- if or .Values.persistence.enabled .Values.persistence.extra.enabled }}
       volumes:
+        {{- if .Values.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
             claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{ else }}{{ include "basic-chart.fullname" . }}-pvc{{ end }}
+        {{- end }}
+        {{- if .Values.persistence.extra.enabled }}
+        - name: extra-data
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.extra.existingClaim }}{{ .Values.persistence.extra.existingClaim }}{{ else }}{{ include "basic-chart.fullname" . }}-extra-pvc{{ end }}
+        {{- end }}
       {{- end }}
 {{- if .Values.nodeSelector }}
       nodeSelector:

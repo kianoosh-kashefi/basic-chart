@@ -54,6 +54,13 @@ persistence:
   accessMode: ReadWriteOnce
   size: 1Gi
   mountPath: /data
+  extra:
+    enabled: false
+    existingClaim: ""
+    storageClass: ""
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    mountPath: /data2
 
 # Horizontal Pod Autoscaler settings
 hpa:

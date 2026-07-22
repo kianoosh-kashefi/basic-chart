@@ -15,3 +15,21 @@ spec:
   storageClassName: {{ .Values.persistence.storageClass }}
   {{- end }}
 {{- end }}
+
+{{- if and .Values.persistence.extra.enabled (not .Values.persistence.extra.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "basic-chart.fullname" . }}-extra-pvc
+  labels:
+    {{- include "basic-chart.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.persistence.extra.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.extra.size }}
+  {{- if .Values.persistence.extra.storageClass }}
+  storageClassName: {{ .Values.persistence.extra.storageClass }}
+  {{- end }}
+{{- end }}
