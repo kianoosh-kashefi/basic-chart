@@ -6,6 +6,7 @@ This repository contains a Helm chart to deploy an application with configurable
 - Configurable container port (`containerPort`) that the pod receives traffic on
 - Configurable persistence (enable/disable, existing claim, size, mount path)
 - Optional Ingress configuration via `ingress.*`
+- ConfigMap and Secret environment variable injection via `configMap.*` and `secret.*`
 - Extra manifest support via `extraObjects`
 - HPA configuration (min/max replicas and CPU target)
 
@@ -36,6 +37,15 @@ helm install my-release . --set ingress.enabled=true \
   --set ingress.hosts[0].host=example.com \
   --set ingress.hosts[0].paths[0].path=/ \
   --set ingress.hosts[0].paths[0].pathType=ImplementationSpecific
+```
+
+Inject ConfigMap and Secret values as environment variables:
+
+```bash
+helm install my-release . --set configMap.enabled=true \
+  --set configMap.data.LOG_LEVEL=debug \
+  --set secret.enabled=true \
+  --set secret.stringData.DB_PASSWORD=supersecret
 ```
 
 Add an extra Kubernetes object through values:
@@ -76,4 +86,4 @@ Notes
 - The Service `port` (`service.port`) and the Pod `containerPort` (`containerPort`) are configurable independently; `targetPort` is wired to `containerPort` by default.
 - The HPA resource uses CPU utilization by default and can be disabled via `hpa.enabled`.
 
-Want me to run `helm lint` on the chart or add an example `my-values.yaml` file? 
+Want me to run `helm lint` on the chart or add an example `my-values.yaml` file?
