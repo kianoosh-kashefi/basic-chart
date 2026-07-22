@@ -1,0 +1,6 @@
+*.DS_Store
+*.tgz
+*.png
+.gitignore
+README.md
+LICENSE

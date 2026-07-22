@@ -1,0 +1,9 @@
+1. Get the application URL by running these commands:
+
+  export POD_NAME=$(kubectl get pods -l app.kubernetes.io/instance={{ .Release.Name }} -o jsonpath='{.items[0].metadata.name}')
+  echo "Port: {{ .Values.containerPort }}"
+  echo "To port-forward: kubectl port-forward $POD_NAME {{ .Values.containerPort }}:{{ .Values.containerPort }}"
+
+2. To install with persistence enabled and custom container port:
+
+  helm install my-release ./chart --set persistence.enabled=true --set containerPort=9090 --set persistence.size=5Gi
