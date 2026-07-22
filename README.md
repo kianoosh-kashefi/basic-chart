@@ -8,6 +8,7 @@ This repository contains a Helm chart to deploy an application with configurable
 - Optional second persistent volume via `persistence.extra.*`
 - Optional Ingress configuration via `ingress.*`
 - ConfigMap and Secret environment variable injection via `configMap.*` and `secret.*`
+- Optional Pod `fsGroup` support for persistent volume mounts via `securityContext.fsGroup`
 - Extra manifest support via `extraObjects`
 - HPA configuration (min/max replicas and CPU target)
 

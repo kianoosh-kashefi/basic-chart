@@ -16,6 +16,10 @@ spec:
         app.kubernetes.io/name: {{ include "basic-chart.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      securityContext:
+        {{- if .Values.securityContext.fsGroup }}
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+        {{- end }}
       containers:
         - name: {{ include "basic-chart.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

@@ -43,6 +43,9 @@ secret:
   type: Opaque
   stringData: {}
 
+securityContext:
+  fsGroup: 1000
+
 # The container port that the Pod receives traffic on (configurable)
 containerPort: 8080
 
